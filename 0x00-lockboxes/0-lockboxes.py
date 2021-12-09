@@ -1,5 +1,9 @@
 #!/usr/bin/python3
+""" Project """
+
+
 def canUnlockAll(boxes):
+    """ method that determines if all the boxes can be opened """
     keys = set(boxes[0])
     pichu = 0
     check = set([])
