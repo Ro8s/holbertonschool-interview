@@ -8,12 +8,8 @@ def minOperations(n):
     operations = 0
     if (n < 0 or type(n) != int):
         return (operations)
-    if (n == None):
-        return (operations)
     h = "H"
     copy = "H"
-    if (n == len(h)):
-        return (operations)
     while (1):
         if (n == len(h)):
             break
