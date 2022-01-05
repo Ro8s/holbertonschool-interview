@@ -10,17 +10,12 @@ def minOperations(n):
         return (operations)
     h = "H"
     copy = "H"
-    while (1):
-        if (n == len(h)):
-            break
-        elif (n > len(h)):
-            if (n % len(h) == 0):
-                operations += 2
-                copy = h
-                h = h + copy
-                continue
-            else:
-                h = h + copy
-                operations += 1
-                continue
+    while (n > len(h)):
+        if (n % len(h) == 0):
+            operations += 2
+            copy = h
+            h = h + copy
+        else:
+            h = h + copy
+            operations += 1
     return (operations)
