@@ -1,46 +1,14 @@
-#include "sandpiles.h"
+nclude "sandpiles.h"
 
 /**
- * sum - sums two sandpiles
- * @grid1: sandpile, 3x3 matrix
- * @grid2: second sandpile, which will be 0 at then end
- */
-static void sum(int grid1[3][3], int grid2[3][3])
-{
-	int i, j;
-
-	for (i = 0; i < 3; i++)
-		for (j = 0; j < 3; j++)
-			grid1[i][j] += grid2[i][j], grid2[i][j] = 0;
-
-}
-
-/**
- * is_stable - checks if snadpile is stable
- * @grid: sandpile, 3x3 matrix
- * Return: 1 if stable, 0 otherwise
-*/
-static int is_stable(int grid[3][3])
-{
-	int i, j;
-
-	for (i = 0; i < 3; i++)
-		for (j = 0; j < 3; j++)
-			if (grid[i][j] > 3)
-				return (0);
-	return (1);
-}
-
-/**
- * print_grid - Prints the grid
- * @grid: sandpile, 3x3 matrix
- * Return: 1 if stable, 0 otherwise
-*/
+  * print_grid - Print 3x3 grid
+  * @grid: 3x3 grid
+  *
+  */
 static void print_grid(int grid[3][3])
 {
 	int i, j;
 
-	printf("=\n");
 	for (i = 0; i < 3; i++)
 	{
 		for (j = 0; j < 3; j++)
@@ -49,48 +17,89 @@ static void print_grid(int grid[3][3])
 				printf(" ");
 			printf("%d", grid[i][j]);
 		}
-		printf("\n");
+	printf("\n");
 	}
 }
 
 /**
- * topple - Topples sandpile
- * @grid1: First main sandpile
- * @grid2: Second sandpile
- */
-static void topple(int grid1[3][3], int grid2[3][3])
+  * sum - sum
+  * @src: sandpile
+  * @dest: sandpile
+  */
+
+void sum(int src[3][3], int dest[3][3])
 {
-	int i, j;
+	int x, y;
 
-	for (i = 0; i < 3; i++)
-		for (j = 0; j < 3; j++)
-			if (grid1[i][j] > 3)
-			{
-				grid1[i][j] -= 4;
-				if (i - 1 >= 0)
-					grid2[i - 1][j]++;
-				if (i + 1 < 3)
-					grid2[i + 1][j]++;
+	for (x = 0; x < 3; x++)
+		for (y = 0; y < 3; y++)
+		{
+			dest[x][y] = src[x][y];
+		}
+}
+/**
+  * tst - tst
+  * @arr: matrix
+  * Return: 0
+  */
+int tst(int arr[3][3])
+{
+	int x, y;
 
-				if (j - 1 >= 0)
-					grid2[i][j - 1]++;
-				if (j + 1 < 3)
-					grid2[i][j + 1]++;
-			}
+	for (x = 0; x < 3; x++)
+	{
+		for (y = 0; y < 3; y++)
+		{
+			if (arr[x][y] > 3)
+				return (1);
+		}
+	}
+	return (0);
 }
 
+
 /**
- * sandpiles_sum - Sums and topples two sandpiles
- * @grid1: First main sandpile
- * @grid2: Second sandpile
- */
+  * sandpiles_sum - function that computes the sum of two sandpiles
+  * @grid1: matrix
+  * @grid2: matrix
+  */
 void sandpiles_sum(int grid1[3][3], int grid2[3][3])
 {
-	sum(grid1, grid2);
-	while (!is_stable(grid1))
+
+	int x;
+	int y;
+	int referenceGrid[3][3];
+
+	for (x = 0; x < 3; x++)
+		for (y = 0; y < 3; y++)
+			grid1[x][y] = grid1[x][y] + grid2[x][y];
+	if (!tst(grid1))
+		return;
+
+	printf("=\n");
+	print_grid(grid1);
+	while ("2021!")
 	{
+		sum(grid1, referenceGrid);
+		for (x = 0; x < 3; x++)
+			for (y = 0; y < 3; y++)
+			{
+				if (referenceGrid[x][y] > 3)
+				{
+					grid1[x][y] = grid1[x][y] - 4;
+					if (x - 1 >= 0)
+						grid1[x - 1][y] += 1;
+					if (x + 1 <= 2)
+						grid1[x + 1][y] += 1;
+					if (y - 1 >= 0)
+						grid1[x][y - 1] += 1;
+					if (y + 1 <= 2)
+						grid1[x][y + 1] += 1;
+				}
+			}
+		if (!tst(grid1))
+			break;
+		printf("=\n");
 		print_grid(grid1);
-		topple(grid1, grid2);
-		sum(grid1, grid2);
 	}
 }
