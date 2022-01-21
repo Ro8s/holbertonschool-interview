@@ -9,11 +9,28 @@
  */
 int is_palindrome(listint_t **head)
 {
-listint_t aux;
+listint_t *aux;
+int array[1901];
+int index = 0;
+int i = 0;
+int comp;
+
 if (!head)
 return (1);
-aux = head;
-
-
-
+aux = *head;
+while (aux)
+{
+array[index] = aux->n;
+index++;
+aux = aux->next;
+}
+comp = index;
+for (; i < index / 2; i++)
+{
+if (array[i] != array[comp - i - 1])
+{
+return (0);
+}
+}
+return (1);
 }
