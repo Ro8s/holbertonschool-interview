@@ -10,7 +10,7 @@
 int is_palindrome(listint_t **head)
 {
 listint_t *aux;
-int array[1901];
+int array[200];
 int index = 0;
 int i = 0;
 int comp;
