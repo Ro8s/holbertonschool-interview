@@ -15,9 +15,9 @@ while (a && b && b->next)
 {
 a = a->next;
 b = b->next->next;
-if (s == f)
-{
+if (a == b)
 return (1);
 }
 return (0);
 }
+
