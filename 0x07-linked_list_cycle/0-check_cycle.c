@@ -14,7 +14,7 @@ b = list;
 while (a && b && b->next)
 {
 a = a->next;
-b  = b->next->next;
+b = b->next->next;
 if (s == f)
 return (1);
 }
