@@ -9,7 +9,7 @@
 
 int is_palindrome(unsigned long n)
 {
-int rev = 0
+int rev = 0;
 int rem;
 int orig = n;
 
