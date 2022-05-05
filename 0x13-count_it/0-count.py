@@ -1,39 +1,45 @@
 #!/usr/bin/python3
-"""count it project"""
+""" count_it project"""
+
 import requests
 
 
-def recurse(sub, word_list, hot_titles, after=""):
-    """recursive function """
-    u = "https://www.reddit.com/r/{}/hot.json?after={}".format(sub, after)
-    res = requests.get(u,
-                       headers={'User-agent': 'product'},
-                       allow_redirects=False)
-
-    if res.status_code != 200:
+def rec(sub, wlist, wdict, wdict_r, after="",):
+    """ recfunction """
+    url = "https://www.reddit.com/r/{}/hot.json".format(sub)
+    url += "?limit=100&after={}".format(after)
+    response = requests.get(url,
+                            allow_redirects=False,
+                            headers={'User-agent': 'Rochos'}
+                            )
+    if response.status_code != 200:
         return None
+    red = response.json().get("data").get("children")
+    for article in red:
+        titles = article.get("data").get("title").lower().split(" ")
+        for title in titles:
+            if title in wdict:
+                wdict[title] += 1
+    after = response.json().get("data").get("after")
     if after is None:
-        return hot_titles
-
-    for i in res.json().get('data').get('children'):
-        t = i.get('data').get('title').split()
-        for word in set(word_list):
-            if word.lower() in [x.lower() for x in t]:
-                if hot_titles.get(word):
-                    hot_titles[word] += 1
-                else:
-                    hot_titles[word] = 1
-
-    after = res.json().get('data').get('after')
-    recurse(sub, word_list, hot_titles, after)
-    return hot_titles
+        sorted_w = sorted(wdict.items(), key=lambda t: t[::-1])
+        sorted_w_desc = sorted(sorted_w, key=lambda tup: tup[1], reverse=True)
+        for w in sorted_w_desc:
+            if w[1] > 0:
+                print("{}: {}".format(w[0], w[1] * wdict_r[w[0]]))
+        return
+    return rec(sub, wlist, wdict, wdict_r, after)
 
 
 def count_words(subreddit, word_list):
-    """ count_words    """
-    hot_titles = recurse(subreddit, word_list, {})
-    if hot_titles:
-        for k, v in sorted(hot_titles.items(), key=lambda val: val[1],
-                           reverse=True):
-            if v != 0:
-                print('{}: {}'.format(k, v))
+    """ countwords prototype """
+    wdict = {}
+    wdict_r = {}
+    word_list = [word.lower() for word in word_list]
+    for w in word_list:
+        if w not in wdict:
+            wdict_r[w] = 1
+            wdict[w] = 0
+        else:
+            wdict_r[w] += 1
+    results = rec(subreddit, word_list, wdict, wdict_r)
