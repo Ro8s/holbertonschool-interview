@@ -16,3 +16,4 @@ def makeChange(coins, total):
             if dp[i - coin] != -1:
                 dp[i] = min(dp[i - coin] + 1, dp[i])
     return dp[total] if dp[total] != float('inf') else -1
+
